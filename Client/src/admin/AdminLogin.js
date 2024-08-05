@@ -2,23 +2,23 @@
 import React, { useState, useEffect } from 'react';
 import IT from '../Assets/ITBLOCK.png';
 import gmrit from '../Assets/gmrit.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
 
-const Login = () => {
+const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = Cookies.get('admintoken');
     if (token) {
-      navigate('/mainpage');
+      navigate('/admindashboard');
     }
   }, [navigate]);
 
@@ -27,13 +27,13 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      console.log('Submitting login with email:', email, 'and password:', password);
-      const response = await axios.post('http://localhost:3001/student/login', { email, password });
+      console.log('Submitting login with email:', mobile, 'and password:', password);
+      const response = await axios.post('http://localhost:3001/admin/login', { mobile, password });
       console.log(response);
       if (response.data.token) {
-        Cookies.set('token', response.data.token, { expires: 1 / 24 });
+        Cookies.set('admintoken', response.data.token, { expires: 1 / 24 });
         toast.success('Login Successful');
-        navigate('/mainpage');
+        navigate('/admindashboard');
       } else {
         toast.error('Invalid Credentials');
       }
@@ -46,7 +46,7 @@ const Login = () => {
   };
 
   const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+    setMobile(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
@@ -71,20 +71,20 @@ const Login = () => {
               <img src={gmrit} height={130} width={130} alt="Logo" />
             </div>
             <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">
-              Student Login
+              Admin Login
             </h2>
             <form onSubmit={handleSubmit} className="mt-1">
               <div className="space-y-5">
                 <div>
-                  <label htmlFor="email" className="text-base font-medium text-gray-900">
-                    Email address
+                  <label htmlFor="mobile" className="text-base font-medium text-gray-900">
+                    Mobile Number
                   </label>
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-400 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="email"
-                      placeholder="JNTUNO@gmrit.edu.in"
-                      value={email}
+                      type="number"
+                      placeholder="7702XXXXXX"
+                      value={mobile}
                       onChange={handleEmailChange}
                     />
                   </div>
@@ -94,14 +94,6 @@ const Login = () => {
                     <label htmlFor="password" className="text-base font-medium text-gray-900">
                       Password
                     </label>
-                    <Link
-                      style={{textDecoration : 'none'}}
-                      to='/resetpassword'
-                      title="Forgot password?"
-                      className="text-sm font-semibold text-black hover:underline"
-                    >
-                      Forgot password?
-                    </Link>
                   </div>
                   <div className="mt-2">
                     <input
@@ -161,16 +153,7 @@ const Login = () => {
                       </>
                     )}
                   </button>
-                  <p className="mt-6 text-sm text-gray-600">
-                    Don&#x27;t have an account?{' '}
-                    <a
-                      href="#"
-                      title="Contact Your Administrator"
-                      className="font-semibold text-black transition-all duration-200 hover:underline"
-                    >
-                      Contact Your Administrator
-                    </a>
-                  </p>
+                  
                 </div>
               </div>
             </form>
@@ -181,4 +164,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

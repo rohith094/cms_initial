@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {toast} from 'react-toastify';
 
-const Logout = () => {
+const AdminLogout = () => {
   const navigate = useNavigate();
   const handleLogout = ()=>{
       // Clear the token from cookies
-      Cookies.remove('token');
+      Cookies.remove('admintoken');
       
       // Show a logout success message
-      toast.info('Logout Successful');
+      toast.success('Logout Successful');
   
       // Redirect to login page
-      navigate('/login');
+      navigate('/admin/login');
   }
 
   return (
@@ -42,4 +42,4 @@ const Logout = () => {
   );
 };
 
-export default Logout;
+export default AdminLogout;
